@@ -3,17 +3,161 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= title %></title>
-</head>
-<body>
-  <h1>Welcome to <%= title %></h1>
+  <title><%= title %> | Sage Space</title>
 
-  <% if (user) { %>
-    <p>Logged in as: <strong><%= user.username %></strong></p>
-    <a href="/logout">Log Out</a>
-  <% } else { %>
-    <p>Please log in or register to manage your files.</p>
-    <a href="/login">Log In</a> | <a href="/register">Register</a>
-  <% } %>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="container">
+
+  <nav>
+    <div class="logo"> Sage Space</div>
+
+    <div class="nav-links">
+      <% if(user){ %>
+        <a class="btn btn-secondary" href="/logout">Log Out</a>
+      <% } else { %>
+        <a class="btn btn-secondary" href="/login">Log In</a>
+        <a class="btn btn-primary" href="/register">Get Started</a>
+      <% } %>
+    </div>
+  </nav>
+
+  <section class="hero">
+
+    <div>
+
+      <h1>
+        Store your files in
+        <span class="green">Sage Space</span>
+      </h1>
+
+      <p>
+        A simple, secure cloud storage platform for your documents,
+        photos, assignments and projects. Upload, organize and access
+        your files from anywhere.
+      </p>
+
+      <% if(user){ %>
+
+        <div class="hero-buttons">
+          <a href="/dashboard" class="btn btn-primary">Go to Dashboard</a>
+          <a href="/logout" class="btn btn-secondary">Log Out</a>
+        </div>
+
+        <br>
+
+        <p>
+          Welcome back,
+          <strong style="color:#4ade80;">
+            <%= user.username %>
+          </strong>
+        </p>
+
+      <% } else { %>
+
+        <div class="hero-buttons">
+          <a href="/register" class="btn btn-primary">Create Free Account</a>
+          <a href="/login" class="btn btn-secondary">Log In</a>
+        </div>
+
+      <% } %>
+
+    </div>
+
+    <div class="card">
+
+      <h2>Free Storage</h2>
+
+      <div class="storage">
+        <h3 style="font-size:2.5rem;">1 GB</h3>
+        <p>Every account starts with <strong>1 GB</strong> of secure cloud storage.</p>
+
+        <div class="progress">
+          <div></div>
+        </div>
+
+        <small>Example usage: 250 MB / 1 GB</small>
+
+      </div>
+
+      <div class="stats">
+
+        <div class="stat">
+          <h3>1 GB</h3>
+          <p>Free</p>
+        </div>
+
+        <div class="stat">
+          <h3>Secure</h3>
+          <p>Encrypted Uploads</p>
+        </div>
+
+        <div class="stat">
+          <h3>Fast</h3>
+          <p>Easy Sharing</p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <section class="features">
+
+    <h2 class="section-title">Why Choose Sage Space?</h2>
+
+    <div class="feature-grid">
+
+      <div class="feature">
+        <h3>Cloud Storage</h3>
+        <p>
+          Keep all your important files in one place and access them
+          whenever you need them.
+        </p>
+      </div>
+
+      <div class="feature">
+        <h3>Secure</h3>
+        <p>
+          Your uploads are stored safely so you can focus on your work,
+          not your storage.
+        </p>
+      </div>
+
+      <div class="feature">
+        <h3>⚡ Fast Uploads</h3>
+        <p>
+          Upload documents, PDFs, images, videos and more with a clean,
+          simple interface.
+        </p>
+      </div>
+
+      <div class="feature">
+        <h3>Premium Storage</h3>
+        <p>
+          Need more room? Expand your storage anytime.
+          <br><br>
+          <strong>Every extra 10 MB costs only MWK 5.</strong>
+          <br><br>
+          Only pay for the storage you actually need.
+        </p>
+      </div>
+
+    </div>
+
+  </section>
+
+</div>
+
+<footer>
+  © <%= new Date().getFullYear() %> Sage Space • Secure Cloud Storage for Everyone
+</footer>
+
 </body>
 </html>
