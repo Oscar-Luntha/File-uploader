@@ -1,0 +1,139 @@
+/* Google Font */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+
+/* Reset */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Variables */
+
+:root {
+    --primary: #4ade80;
+    --primary-dark: #22c55e;
+
+    --background: #0f172a;
+    --background-light: #1e293b;
+
+    --text: #ffffff;
+    --text-light: #cbd5e1;
+    --muted: #94a3b8;
+
+    --card: rgba(255,255,255,.05);
+    --border: rgba(255,255,255,.08);
+
+    --radius: 16px;
+}
+
+/* Body */
+
+body {
+    font-family: "Inter", sans-serif;
+    background: linear-gradient(
+        135deg,
+        var(--background),
+        var(--background-light),
+        var(--background)
+    );
+    color: var(--text);
+    min-height: 100vh;
+}
+
+/* Containers */
+
+.container {
+    width: min(1200px, 90%);
+    margin: auto;
+}
+
+/* Links */
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Buttons */
+
+.btn {
+    display: inline-block;
+    padding: .9rem 1.5rem;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: .25s ease;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: #0f172a;
+}
+
+.btn-primary:hover {
+    background: var(--primary-dark);
+}
+
+.btn-secondary {
+    border: 1px solid rgba(255,255,255,.15);
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: rgba(255,255,255,.08);
+}
+
+/* Cards */
+
+.card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    backdrop-filter: blur(16px);
+    box-shadow: 0 15px 35px rgba(0,0,0,.25);
+}
+
+/* Navbar */
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 0;
+}
+
+.logo {
+    font-size: 1.7rem;
+    font-weight: 800;
+    color: var(--primary);
+}
+
+/* Utility */
+
+.text-center {
+    text-align: center;
+}
+
+.green {
+    color: var(--primary);
+}
+
+.mt-1 { margin-top:1rem; }
+.mt-2 { margin-top:2rem; }
+.mt-3 { margin-top:3rem; }
+
+.mb-1 { margin-bottom:1rem; }
+.mb-2 { margin-bottom:2rem; }
+.mb-3 { margin-bottom:3rem; }
+
+/* Footer */
+
+footer {
+    margin-top: 5rem;
+    padding: 2rem;
+    text-align: center;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+}
