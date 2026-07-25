@@ -13,12 +13,13 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "bugs": {
     "url": "https://github.com/Oscar-Luntha/File-uploader/issues"
   },
   "homepage": "https://github.com/Oscar-Luntha/File-uploader#readme",
   "dependencies": {
+    "@prisma/adapter-pg": "^7.9.0",
     "@prisma/client": "^7.9.0",
     "@quixo3/prisma-session-store": "^3.1.21",
     "bcryptjs": "^3.0.3",
@@ -31,6 +32,10 @@
     "express-validator": "^7.3.2",
     "multer": "^2.2.0",
     "passport": "^0.7.0",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "pg": "^8.22.0"
+  },
+  "devDependencies": {
+    "prisma": "^7.9.0"
   }
 }

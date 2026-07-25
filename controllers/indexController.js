@@ -5,6 +5,4 @@ const getHomePage = (req, res) => {
   });
 };
 
-module.exports = {
-  getHomePage,
-};
+export { getHomePage };
