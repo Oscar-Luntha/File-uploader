@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account | Sage Space</title>
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/auth.css">
+</head>
+<body>
+
+<div class="container">
+    <nav>
+        <a href="/" class="logo">Sage Space</a>
+        <div>
+            <a href="/" class="btn btn-secondary">Home</a>
+        </div>
+    </nav>
+    <main class="auth-page">
+        <div class="auth-card card">
+            <div class="auth-header">
+                <h1>Create Your Account</h1>
+                <p> Join Sage Space today and receive <strong>1 GB of free cloud storage</strong> for your files. </p>
+            </div>
+            <% if (errors && errors.length > 0) { %>
+                <div class="alert">
+                    <h3>Please fix the following:</h3>
+                    <ul>
+                        <% errors.forEach(error => { %>
+                            <li><%= error.msg %></li>
+                        <% }) %>
+                    </ul>
+                </div>
+            <% } %>
+            <form action="/register" method="POST">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" placeholder="Choose a username" value="<%= formData.username || '' %>" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Create a password" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Repeat password" required>
+                </div>
+                <button class="btn btn-primary auth-btn" type="submit">Create Account</button>
+            </form>
+            <div class="divider">
+                <span>Already have an account?</span>
+            </div>
+            <a href="/login" class="btn btn-secondary auth-btn">Log In Instead</a>
+        </div>
+    </main>
+</div>
+</body>
+</html>
