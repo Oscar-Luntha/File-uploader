@@ -1,13 +1,17 @@
-const express = require("express");
-const path = require("path");
-const indexRouter = require("./routes/indexRouter");
+import express from "express";
+import { fileURLToPath } from "node:url";
+
+import indexRouter from "./routes/indexRouter.js";
+
+const viewsPath = fileURLToPath(new URL("./views", import.meta.url));
+const publicPath = fileURLToPath(new URL("./public", import.meta.url));
 
 const app = express();
 
 app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "views"));
+app.set("views", viewsPath);
 
-app.use(express.static("public"));
+app.use(express.static(publicPath));
 app.use("/", indexRouter);
 
 const PORT = process.env.PORT || 3000;
