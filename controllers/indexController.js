@@ -1,8 +1,7 @@
-const getHomePage = (req, res) => {
+export const getHomePage = (req, res) => {
   res.render("index", {
     title: "File Drive App",
     user: req.user || null,
   });
 };
 
-export { getHomePage };
