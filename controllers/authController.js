@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import { body , validationResult } from "express-validator"
 import { Prisma } from "../generated/prisma";
+import { formatDate } from "date-fns";
 
 export const getRegisterPage =  (req, res) => {
   res.render("register", {errors : [], formDats : {} })
@@ -29,3 +30,22 @@ export const validateRegister = [
       return true;
     }),
 ]
+
+export const postRegister = [...validateRegister , async (req, res, next) => {
+    const errors = validationResult(req)
+    if(!errors.isEmpty()){
+        return res.status(400).render("register", {errors: errors.array(), formData: {username : req.body.username}})
+    }
+    try {
+        const hashedPassword = await bcrypt.hash(req.body.password, 10);
+        await prisma.user.create({
+            data : {
+                username : req.body.username,
+                password: hashedPassword,
+            }
+        })
+        res.redirect("/login")
+    }catch (error) {
+        next(error)
+    }
+}]
