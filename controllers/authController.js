@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import { body , validationResult } from "express-validator"
+import passport from "passport";
 import prisma from "../config/prisma.js";
 
 export const getRegisterPage =  (req, res) => {
@@ -48,3 +49,34 @@ export const postRegister = [...validateRegister , async (req, res, next) => {
         next(error)
     }
 }]
+
+export const getLoginPage = (req, res) => {
+  res.render("login", { errors: [] });
+};
+
+export const postLogin = (req, res, next) => {
+  passport.authenticate("local", (err, user, info) => {
+    if (err) {
+      return next(err);
+    }
+    if (!user) {
+      return res.status(400).render("login", {
+        errors: [{ msg: info ? info.message : "Invalid credentials." }],
+      });
+    }
+    req.logIn(user, (err) => {
+      if (err) {
+        return next(err);
+      }
+      return res.redirect("/");
+    });
+  })(req, res, next);
+};
+export const logout = (req, res, next) => {
+  req.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("/login");
+  });
+};
