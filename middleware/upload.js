@@ -36,3 +36,11 @@ const fileFilter = (req, file, cb) => {
     cb(new Error("Invalid file type. Only Images, PDFs, and Docs are allowed!"), false);
   }
 };
+
+const upload = multer({
+  storage,
+  limits: { fileSize: 5 * 1024 * 1024 },
+  fileFilter,
+});
+
+export default upload;
