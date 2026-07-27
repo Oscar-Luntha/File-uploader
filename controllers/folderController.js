@@ -29,3 +29,24 @@ export const createFolder = [
         }
     }
 ]
+export const getFolderDetails = async (req, res, next) => {
+    try {
+        const folderId = req.params.id;
+        const folder = await prisma.folder.findFirst({
+            where : {
+                id : folderId,
+                userId: req.user.id
+            }, include : {
+                files : {
+                    orderBy : {createdAt : "desc"}
+                }
+            }
+        })
+        if (!folder) {
+            return res.status(404).send("Folder not found.");
+        }
+        res.render("folder", {user: req.user,folder,files: folder.files,});
+    } catch (error){
+        next(error)
+    }
+}
