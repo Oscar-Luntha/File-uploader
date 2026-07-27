@@ -51,6 +51,27 @@ export const getFolderDetails = async (req, res, next) => {
     }
 }
 
+export const updateFolder = [ ...validateFolder, async (req, res, next) => {
+    const errors = validationResult(req)
+    const folderId = req.params.id;
+    if (!errors.isEmpty()) {
+      return res.status(400).redirect(`/folders/${folderId}`);
+    }
+    try { 
+        await prisma.folder.updateMany({
+            where : {
+                id: folderId,
+                userId: req.user.id,  
+            },data: {
+                name: req.body.name,
+            },
+        })
+        res.redirect("/dashboard")
+    }catch (error) {
+        next(error)
+    }
+}]
+
 export const deleteFolder = async (req, res, next) => {
   try {
     const folderId = req.params.id;
