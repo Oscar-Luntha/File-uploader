@@ -9,6 +9,7 @@ import passport from "./config/passport.js";
 import authRouter from "./routes/authRouter.js";
 import indexRouter from "./routes/indexRouter.js";
 import dashboardRouter from "./routes/dashboardRouter.js";
+import folderRouter from "./routes/folderRouter.js";
 
 const viewsPath = fileURLToPath(new URL("./views", import.meta.url));
 const publicPath = fileURLToPath(new URL("./public", import.meta.url));
@@ -48,6 +49,6 @@ app.use(express.static(publicPath));
 app.use("/", indexRouter);
 app.use("/", authRouter)
 app.use("/", dashboardRouter)
-
+app.use("/", folderRouter);
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
