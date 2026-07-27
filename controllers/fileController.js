@@ -25,4 +25,21 @@ export const uploadFile = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+};export const getFileDetails = async (req, res, next) => {
+  try {
+    const file = await prisma.file.findFirst({
+      where: {
+        id: req.params.id,
+        userId: req.user.id,
+      },
+    });
+
+    if (!file) {
+      return res.status(404).send("File not found.");
+    }
+
+    res.render("fileDetail", { file });
+  } catch (error) {
+    next(error);
+  }
 };
