@@ -50,3 +50,18 @@ export const getFolderDetails = async (req, res, next) => {
         next(error)
     }
 }
+
+export const deleteFolder = async (req, res, next) => {
+  try {
+    const folderId = req.params.id;
+    await prisma.folder.deleteMany({
+      where: {
+        id: folderId,
+        userId: req.user.id,
+      },
+    });
+    res.redirect("/dashboard");
+  } catch (error) {
+    next(error);
+  }
+};
