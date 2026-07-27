@@ -61,3 +61,34 @@ export const downloadFile = async (req, res, next) => {
     next(error);
   }
 };
+export const deleteFile = async (req, res, next) => {
+  try {
+    const file = await prisma.file.findFirst({
+      where: {
+        id: req.params.id,
+        userId: req.user.id,
+      },
+    });
+
+    if (!file) {
+      return res.status(404).send("File not found.");
+    }
+
+    // Delete local filesystem file
+    if (file.path && fs.existsSync(file.path)) {
+      fs.unlinkSync(file.path);
+    }
+
+    // Delete record in database
+    await prisma.file.delete({
+      where: { id: file.id },
+    });
+
+    if (file.folderId) {
+      return res.redirect(`/folders/${file.folderId}`);
+    }
+    res.redirect("/dashboard");
+  } catch (error) {
+    next(error);
+  }
+};

@@ -4,7 +4,7 @@ export const getDashboard = async (req, res, next) => {
     try{
         const folders = await prisma.folder.findMany({
             where : {
-                userId: req.user.is,
+                userId: req.user.id,
             },orderBy : { createdAt: "desc"}
         })
         const files = await prisma.file.findMany({
