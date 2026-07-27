@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Sage Space</title>
+
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body>
+
+<div class="container">
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav>
+        <a href="/" class="logo">🌿 Sage Space</a>
+
+        <div class="nav-actions">
+            <span class="user-badge">
+                <i class="fa-solid fa-user"></i>
+                <%= user.username %>
+            </span>
+
+            <a href="/logout" class="btn btn-secondary">
+                Logout
+            </a>
+        </div>
+    </nav>
+
+    <!-- ================= DASHBOARD HEADER ================= -->
+
+    <section class="dashboard-header">
+
+        <div>
+            <h1>Welcome back, <%= user.username %> 👋</h1>
+            <p>
+                Manage your folders, upload files, and organize your cloud storage.
+            </p>
+        </div>
+
+        <div class="storage-card card">
+
+            <h3>Storage Usage</h3>
+
+            <% 
+                const usedBytes = files.reduce((sum, file) => sum + file.size, 0);
+                const totalBytes = 1024 * 1024 * 1024;
+                const usedMB = (usedBytes / (1024 * 1024)).toFixed(2);
+                const percent = ((usedBytes / totalBytes) * 100).toFixed(1);
+            %>
+
+            <div class="progress">
+                <div class="progress-bar" style="width:<%= percent %>%"></div>
+            </div>
+
+            <small>
+                <%= usedMB %> MB of 1024 MB used
+            </small>
+
+        </div>
+
+    </section>
+
+    <!-- ================= QUICK STATS ================= -->
+
+    <section class="stats-grid">
+
+        <div class="stat card">
+            <i class="fa-solid fa-folder"></i>
+            <h2><%= folders.length %></h2>
+            <p>Folders</p>
+        </div>
+
+        <div class="stat card">
+            <i class="fa-solid fa-file"></i>
+            <h2><%= files.length %></h2>
+            <p>Files</p>
+        </div>
+
+        <div class="stat card">
+            <i class="fa-solid fa-hard-drive"></i>
+            <h2>1 GB</h2>
+            <p>Free Plan</p>
+        </div>
+
+    </section>
+
+    <!-- ================= ACTIONS ================= -->
+
+    <section class="actions">
+
+        <div class="card action-card">
+
+            <h2>
+                <i class="fa-solid fa-folder-plus"></i>
+                Create Folder
+            </h2>
+
+            <form action="/folders" method="POST">
+
+                <input
+                    type="text"
+                    name="name"
+                    placeholder="Folder name"
+                    required>
+
+                <button class="btn btn-primary">
+                    Create Folder
+                </button>
+
+            </form>
+
+        </div>
+
+        <div class="card action-card">
+
+            <h2>
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+                Upload File
+            </h2>
+
+            <form
+                action="/files/upload"
+                method="POST"
+                enctype="multipart/form-data">
+
+                <input
+                    type="file"
+                    name="file"
+                    required>
+
+                <button class="btn btn-primary">
+                    Upload
+                </button>
+
+            </form>
+
+        </div>
+
+    </section>
+
+    <!-- ================= CONTENT ================= -->
+
+    <section class="content-grid">
+
+        <!-- FOLDERS -->
+
+        <div class="card">
+
+            <div class="section-header">
+                <h2>
+                    <i class="fa-solid fa-folder"></i>
+                    My Folders
+                </h2>
+            </div>
+
+            <% if (folders.length === 0) { %>
+
+                <div class="empty-state">
+
+                    <i class="fa-regular fa-folder-open"></i>
+
+                    <p>No folders created yet.</p>
+
+                </div>
+
+            <% } else { %>
+
+                <% folders.forEach(folder => { %>
+
+                    <div class="item">
+
+                        <div>
+
+                            <a href="/folders/<%= folder.id %>">
+                                <strong><%= folder.name %></strong>
+                            </a>
+
+                        </div>
+
+                        <div class="item-actions">
+
+                            <form action="/folders/<%= folder.id %>/update" method="POST">
+
+                                <input
+                                    type="text"
+                                    name="name"
+                                    value="<%= folder.name %>">
+
+                                <button class="btn btn-secondary">
+                                    Rename
+                                </button>
+
+                            </form>
+
+                            <form action="/folders/<%= folder.id %>/delete" method="POST">
+
+                                <button
+                                    class="btn btn-danger"
+                                    onclick="return confirm('Delete this folder?')">
+
+                                    Delete
+
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                <% }) %>
+
+            <% } %>
+
+        </div>
+
+        <!-- FILES -->
+
+        <div class="card">
+
+            <div class="section-header">
+                <h2>
+                    <i class="fa-solid fa-file"></i>
+                    My Files
+                </h2>
+            </div>
+
+            <% if (files.length === 0) { %>
+
+                <div class="empty-state">
+
+                    <i class="fa-regular fa-file"></i>
+
+                    <p>No files uploaded yet.</p>
+
+                </div>
+
+            <% } else { %>
+
+                <% files.forEach(file => { %>
+
+                    <div class="item">
+
+                        <div>
+
+                            <a href="/files/<%= file.id %>">
+
+                                <strong><%= file.name %></strong>
+
+                            </a>
+
+                            <small>
+                                <%= (file.size / 1024).toFixed(2) %> KB
+                            </small>
+
+                        </div>
+
+                        <a
+                            href="/files/<%= file.id %>"
+                            class="btn btn-secondary">
+
+                            View
+
+                        </a>
+
+                    </div>
+
+                <% }) %>
+
+            <% } %>
+
+        </div>
+
+    </section>
+
+</div>
+
+</body>
+</html>
