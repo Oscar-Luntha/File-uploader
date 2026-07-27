@@ -101,122 +101,58 @@
             </h2>
 
             <form action="/folders" method="POST">
-
-                <input
-                    type="text"
-                    name="name"
-                    placeholder="Folder name"
-                    required>
-
-                <button class="btn btn-primary">
+                <input type="text" name="name" placeholder="Folder name" required>
+                <button class="btn btn-primary" type="submit">
                     Create Folder
                 </button>
-
             </form>
-
         </div>
-
         <div class="card action-card">
-
             <h2>
                 <i class="fa-solid fa-cloud-arrow-up"></i>
                 Upload File
             </h2>
-
-            <form
-                action="/files/upload"
-                method="POST"
-                enctype="multipart/form-data">
-
-                <input
-                    type="file"
-                    name="file"
-                    required>
-
-                <button class="btn btn-primary">
-                    Upload
-                </button>
-
+            <form action="/files/upload" method="POST" enctype="multipart/form-data">
+                <input type="file" name="file" required>
+                <button class="btn btn-primary"> Upload </button>
             </form>
-
         </div>
-
     </section>
-
-    <!-- ================= CONTENT ================= -->
-
     <section class="content-grid">
-
-        <!-- FOLDERS -->
-
         <div class="card">
-
             <div class="section-header">
                 <h2>
                     <i class="fa-solid fa-folder"></i>
                     My Folders
                 </h2>
             </div>
-
             <% if (folders.length === 0) { %>
-
                 <div class="empty-state">
-
                     <i class="fa-regular fa-folder-open"></i>
-
                     <p>No folders created yet.</p>
-
                 </div>
-
             <% } else { %>
-
                 <% folders.forEach(folder => { %>
-
                     <div class="item">
-
                         <div>
-
                             <a href="/folders/<%= folder.id %>">
                                 <strong><%= folder.name %></strong>
                             </a>
-
                         </div>
-
                         <div class="item-actions">
-
                             <form action="/folders/<%= folder.id %>/update" method="POST">
-
-                                <input
-                                    type="text"
-                                    name="name"
-                                    value="<%= folder.name %>">
-
-                                <button class="btn btn-secondary">
-                                    Rename
-                                </button>
-
+                                <input type="text" name="name" value="<%= folder.name %>">
+                                <button class="btn btn-secondary"> Rename </button>
                             </form>
-
                             <form action="/folders/<%= folder.id %>/delete" method="POST">
-
-                                <button
-                                    class="btn btn-danger"
-                                    onclick="return confirm('Delete this folder?')">
-
+                                <button class="btn btn-danger" onclick="return confirm('Delete this folder?')">
                                     Delete
-
                                 </button>
-
                             </form>
-
                         </div>
-
                     </div>
-
                 <% }) %>
-
             <% } %>
-
         </div>
 
         <!-- FILES -->
