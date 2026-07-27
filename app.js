@@ -8,6 +8,7 @@ import prisma from "./config/prisma.js";
 import passport from "./config/passport.js";
 import authRouter from "./routes/authRouter.js";
 import indexRouter from "./routes/indexRouter.js";
+import dashboardRouter from "./routes/dashboardRouter.js";
 
 const viewsPath = fileURLToPath(new URL("./views", import.meta.url));
 const publicPath = fileURLToPath(new URL("./public", import.meta.url));
@@ -46,6 +47,7 @@ app.use((req, res, next) => {
 app.use(express.static(publicPath));
 app.use("/", indexRouter);
 app.use("/", authRouter)
+app.use("/", dashboardRouter)
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
