@@ -3,7 +3,8 @@ import session from "express-session"
 import { PrismaSessionStore } from "@quixo3/prisma-session-store";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-
+import multer from "multer";
+import fileRouter from "./routes/fileRouter.js";
 import prisma from "./config/prisma.js";
 import passport from "./config/passport.js";
 import authRouter from "./routes/authRouter.js";
@@ -50,5 +51,17 @@ app.use("/", indexRouter);
 app.use("/", authRouter)
 app.use("/", dashboardRouter)
 app.use("/", folderRouter);
+app.use("/", fileRouter);
+app.use((err, req, res, next) => {
+  if (err instanceof multer.MulterError) {
+    if (err.code === "LIMIT_FILE_SIZE") {
+      return res.status(400).send("File is too large! Maximum allowed size is 5MB.");
+    }
+    return res.status(400).send(err.message);
+  } else if (err) {
+    return res.status(400).send(err.message);
+  }
+  next();
+});
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
