@@ -1,0 +1,589 @@
+/* ===================================================================
+   drive.css — Google-Drive-style app shell
+   Used by: dashboard.ejs, folder.ejs, fileDetail.ejs
+=================================================================== */
+
+.app-shell {
+    display: flex;
+    align-items: flex-start;
+    min-height: 100vh;
+    width: min(1400px, 96%);
+    margin: 0 auto;
+    gap: 2rem;
+}
+
+/* ------------------------------- SHARED COMPONENTS ------------------------------- */
+
+.progress {
+    height: 10px;
+    background: rgba(255,255,255,.08);
+    border-radius: 999px;
+    overflow: hidden;
+    margin: .75rem 0;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-dark), var(--primary));
+}
+
+.user-badge {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    padding: .7rem 1rem;
+    border-radius: 999px;
+    background: rgba(255,255,255,.06);
+    border: 1px solid var(--border);
+}
+
+.user-badge i {
+    color: var(--primary);
+}
+
+.btn-danger {
+    background: #ef4444;
+    color: white;
+    border: none;
+}
+
+.btn-danger:hover {
+    background: #dc2626;
+}
+
+/* ------------------------------- SIDEBAR ------------------------------- */
+
+.sidebar {
+    width: 260px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    padding: 1.5rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    border-right: 1px solid var(--border);
+}
+
+.sidebar-brand {
+    padding: .5rem .5rem 1rem;
+}
+
+.sidebar-brand .logo {
+    font-size: 1.4rem;
+}
+
+/* "+ New" dropdown */
+
+.new-menu-wrapper {
+    position: relative;
+}
+
+.new-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: .6rem;
+    width: 100%;
+    justify-content: center;
+    list-style: none;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(0,0,0,.25);
+}
+
+.new-btn::-webkit-details-marker {
+    display: none;
+}
+
+.new-menu-wrapper[open] .new-btn {
+    background: var(--primary-dark);
+}
+
+.new-menu {
+    position: absolute;
+    top: calc(100% + .6rem);
+    left: 0;
+    width: 280px;
+    z-index: 20;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.new-menu-form {
+    display: flex;
+    flex-direction: column;
+    gap: .6rem;
+}
+
+.new-menu-form label {
+    font-size: .85rem;
+    font-weight: 600;
+    color: var(--text-light);
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+}
+
+.new-menu-form label i {
+    color: var(--primary);
+}
+
+.new-menu hr {
+    border: none;
+    border-top: 1px solid var(--border);
+}
+
+/* Sidebar nav */
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: .25rem;
+}
+
+.sidebar-nav a {
+    display: flex;
+    align-items: center;
+    gap: .9rem;
+    padding: .75rem 1rem;
+    border-radius: 999px;
+    color: var(--text-light);
+    font-weight: 500;
+    transition: .2s ease;
+}
+
+.sidebar-nav a i {
+    width: 18px;
+    text-align: center;
+}
+
+.sidebar-nav a:hover {
+    background: rgba(255,255,255,.06);
+    color: var(--text);
+}
+
+.sidebar-nav a.active {
+    background: rgba(241,241,241,.12);
+    color: var(--text);
+}
+
+/* Storage widget pinned to bottom of sidebar */
+
+.sidebar-storage {
+    margin-top: auto;
+    padding: 1rem;
+    border-radius: var(--radius);
+    background: var(--card);
+    border: 1px solid var(--border);
+}
+
+.sidebar-storage h4 {
+    font-size: .8rem;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: var(--text-light);
+    margin-bottom: .75rem;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+}
+
+.sidebar-storage h4 i {
+    color: var(--primary);
+}
+
+.sidebar-storage small {
+    color: var(--text-light);
+    display: block;
+    margin-top: .6rem;
+    font-size: .78rem;
+}
+
+/* ------------------------------- MAIN PANEL ------------------------------- */
+
+.main-panel {
+    flex: 1;
+    min-width: 0;
+    padding: 1.5rem 0 3rem;
+}
+
+.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    font-size: 1.4rem;
+    font-weight: 700;
+    min-width: 0;
+}
+
+.breadcrumb a {
+    color: var(--text-light);
+    font-weight: 600;
+}
+
+.breadcrumb a:hover {
+    color: var(--primary);
+}
+
+.breadcrumb i.fa-chevron-right {
+    font-size: .8rem;
+    color: var(--muted);
+}
+
+.breadcrumb .current {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.search-input {
+    width: 280px;
+    max-width: 50vw;
+    padding: .7rem 1rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,.05);
+    color: white;
+    font-size: .92rem;
+}
+
+.search-input::placeholder {
+    color: var(--muted);
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(74,222,128,.2);
+}
+
+/* Quick stat pills */
+
+.stats-row {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+}
+
+.stat-pill {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    padding: .8rem 1.2rem;
+    border-radius: 999px;
+}
+
+.stat-pill i {
+    color: var(--primary);
+}
+
+.stat-pill strong {
+    margin-right: .3rem;
+}
+
+.stat-pill span {
+    color: var(--text-light);
+    font-size: .9rem;
+}
+
+/* ------------------------------- FILE TABLE ------------------------------- */
+
+.file-table {
+    padding: 0;
+    overflow: hidden;
+}
+
+.file-table-head {
+    display: grid;
+    grid-template-columns: 1fr 140px 160px 90px;
+    gap: 1rem;
+    padding: .9rem 1.5rem;
+    font-size: .78rem;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+}
+
+.file-row {
+    display: grid;
+    grid-template-columns: 1fr 140px 160px 90px;
+    gap: 1rem;
+    align-items: center;
+    padding: .9rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    transition: background .15s ease;
+}
+
+.file-row:last-child {
+    border-bottom: none;
+}
+
+.file-row:hover {
+    background: rgba(255,255,255,.04);
+}
+
+.file-row.hidden-row {
+    display: none;
+}
+
+.file-name {
+    display: flex;
+    align-items: center;
+    gap: .9rem;
+    min-width: 0;
+}
+
+.file-name i {
+    font-size: 1.3rem;
+    color: var(--primary);
+    width: 22px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.file-name a {
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.file-name a:hover {
+    text-decoration: underline;
+}
+
+.file-size,
+.file-modified {
+    color: var(--text-light);
+    font-size: .88rem;
+}
+
+.row-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: .4rem;
+}
+
+.icon-btn {
+    width: 34px;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-light);
+    cursor: pointer;
+    transition: .15s ease;
+}
+
+.icon-btn:hover {
+    background: rgba(255,255,255,.08);
+    color: var(--text);
+}
+
+.icon-btn.danger:hover {
+    background: rgba(239,68,68,.15);
+    color: #fca5a5;
+    border-color: rgba(239,68,68,.4);
+}
+
+/* inline rename form, hidden until toggled */
+
+.rename-form {
+    display: none;
+    align-items: center;
+    gap: .5rem;
+}
+
+.rename-form.active {
+    display: flex;
+}
+
+.rename-form input {
+    padding: .5rem .7rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,.05);
+    color: white;
+    width: 150px;
+}
+
+/* Empty state re-used inside file-table */
+
+.file-table .empty-state {
+    padding: 4rem 1rem;
+}
+
+/* ------------------------------- FILE PREVIEW (fileDetail page) ------------------------------- */
+
+.file-preview {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 2rem;
+    align-items: start;
+}
+
+.file-preview-main {
+    padding: 4rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1rem;
+}
+
+.file-preview-main i {
+    font-size: 5rem;
+    color: var(--primary);
+}
+
+.file-preview-main h1 {
+    font-size: 1.4rem;
+    word-break: break-word;
+}
+
+.file-preview-side {
+    padding: 1.75rem;
+}
+
+.file-preview-side h3 {
+    margin-bottom: 1.25rem;
+    font-size: 1rem;
+}
+
+.meta-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: .75rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: .9rem;
+}
+
+.meta-row:last-of-type {
+    border-bottom: none;
+}
+
+.meta-row span:first-child {
+    color: var(--text-light);
+}
+
+.meta-row span:last-child {
+    text-align: right;
+    word-break: break-word;
+}
+
+.file-preview-actions {
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
+    margin-top: 1.5rem;
+}
+
+.file-preview-actions form {
+    display: block;
+}
+
+.file-preview-actions .btn,
+.file-preview-actions button {
+    width: 100%;
+}
+
+/* ------------------------------- RESPONSIVE ------------------------------- */
+
+@media (max-width: 1000px) {
+
+    .file-preview {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+@media (max-width: 900px) {
+
+    .app-shell {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        flex-direction: row;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .sidebar-brand {
+        padding: 0;
+    }
+
+    .new-menu-wrapper {
+        order: 3;
+    }
+
+    .sidebar-nav {
+        flex-direction: row;
+        order: 2;
+    }
+
+    .sidebar-storage {
+        display: none;
+    }
+
+    .file-table-head {
+        display: none;
+    }
+
+    .file-row {
+        grid-template-columns: 1fr;
+        gap: .5rem;
+    }
+
+    .row-actions {
+        justify-content: flex-start;
+    }
+
+    .file-size,
+    .file-modified {
+        display: inline;
+    }
+
+}
+
+@media (max-width: 560px) {
+
+    .topbar-right {
+        width: 100%;
+    }
+
+    .search-input {
+        max-width: none;
+        flex: 1;
+    }
+
+}
