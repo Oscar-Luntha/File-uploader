@@ -4,42 +4,146 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Folder: <%= folder.name %></title>
+  <title>Folder: <%= folder.name %> | Sage Space</title>
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/drive.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
 <body>
-  <header>
-    <a href="/dashboard">&larr; Back to Dashboard</a>
-    <h1>📁 <%= folder.name %></h1>
-  </header>
 
-  <hr>
+<%
+    function iconFor(name) {
+        const ext = (name.split('.').pop() || '').toLowerCase();
+        if (['png','jpg','jpeg','gif','webp','svg'].includes(ext)) return 'fa-regular fa-image';
+        if (['mp4','mov','avi','mkv'].includes(ext)) return 'fa-regular fa-file-video';
+        if (['mp3','wav','flac'].includes(ext)) return 'fa-regular fa-file-audio';
+        if (ext === 'pdf') return 'fa-regular fa-file-pdf';
+        if (['doc','docx'].includes(ext)) return 'fa-regular fa-file-word';
+        if (['xls','xlsx','csv'].includes(ext)) return 'fa-regular fa-file-excel';
+        if (['zip','rar','7z'].includes(ext)) return 'fa-regular fa-file-zipper';
+        return 'fa-regular fa-file';
+    }
+%>
 
-  <!-- Upload File inside this Folder -->
-  <section>
-    <h3>Upload File to "<%= folder.name %>"</h3>
-    <form action="/files/upload?folderId=<%= folder.id %>" method="POST" enctype="multipart/form-data">
-      <input type="file" name="file" required>
-      <button type="submit">Upload File</button>
-    </form>
-  </section>
+<div class="app-shell">
 
-  <hr>
+    <!-- ================= SIDEBAR ================= -->
 
-  <!-- List Files in Folder -->
-  <section>
-    <h2>Files in Folder</h2>
-    <% if (files.length === 0) { %>
-      <p>This folder is empty.</p>
-    <% } else { %>
-      <ul>
-        <% files.forEach(file => { %>
-          <li>
-            📄 <a href="/files/<%= file.id %>"><%= file.name %></a> 
-            (<%= (file.size / 1024).toFixed(2) %> KB)
-          </li>
-        <% }) %>
-      </ul>
-    <% } %>
-  </section>
+    <aside class="sidebar">
+
+        <div class="sidebar-brand">
+            <a href="/" class="logo">🌿 Sage Space</a>
+        </div>
+
+        <details class="new-menu-wrapper">
+            <summary class="btn btn-primary new-btn">
+                <i class="fa-solid fa-plus"></i> New
+            </summary>
+
+            <div class="new-menu card">
+                <form action="/files/upload?folderId=<%= folder.id %>" method="POST" enctype="multipart/form-data" class="new-menu-form">
+                    <label><i class="fa-solid fa-cloud-arrow-up"></i> Upload to "<%= folder.name %>"</label>
+                    <input type="file" name="file" required>
+                    <button class="btn btn-primary" type="submit">Upload</button>
+                </form>
+            </div>
+        </details>
+
+        <nav class="sidebar-nav">
+            <a href="/dashboard">
+                <i class="fa-solid fa-house"></i> My Drive
+            </a>
+        </nav>
+
+        <% if (typeof user !== 'undefined' && user) { %>
+            <div class="sidebar-storage">
+                <h4><i class="fa-solid fa-user"></i> <%= user.username %></h4>
+                <small><a href="/logout">Logout</a></small>
+            </div>
+        <% } %>
+
+    </aside>
+
+    <!-- ================= MAIN PANEL ================= -->
+
+    <main class="main-panel">
+
+        <header class="topbar">
+
+            <div class="breadcrumb">
+                <a href="/dashboard">My Drive</a>
+                <i class="fa-solid fa-chevron-right"></i>
+                <span class="current"><i class="fa-solid fa-folder" style="color:var(--primary); margin-right:.4rem;"></i><%= folder.name %></span>
+            </div>
+
+            <div class="topbar-right">
+                <input
+                    type="text"
+                    class="search-input"
+                    id="itemSearch"
+                    placeholder="Search in this folder"
+                    oninput="filterItems(this.value)">
+            </div>
+
+        </header>
+
+        <section class="file-table card" id="itemList">
+
+            <% if (files.length === 0) { %>
+
+                <div class="empty-state">
+                    <i class="fa-regular fa-folder-open"></i>
+                    <p>This folder is empty.</p>
+                </div>
+
+            <% } else { %>
+
+                <div class="file-table-head">
+                    <span>Name</span>
+                    <span>Size</span>
+                    <span>Type</span>
+                    <span></span>
+                </div>
+
+                <% files.forEach(file => { %>
+                    <div class="file-row" data-name="<%= file.name.toLowerCase() %>">
+
+                        <div class="file-name">
+                            <i class="<%= iconFor(file.name) %>"></i>
+                            <a href="/files/<%= file.id %>"><%= file.name %></a>
+                        </div>
+
+                        <span class="file-size"><%= (file.size / 1024).toFixed(2) %> KB</span>
+                        <span class="file-modified">File</span>
+
+                        <div class="row-actions">
+                            <a href="/files/<%= file.id %>" class="icon-btn" title="View">
+                                <i class="fa-solid fa-eye"></i>
+                            </a>
+                        </div>
+
+                    </div>
+                <% }) %>
+
+            <% } %>
+
+        </section>
+
+    </main>
+
+</div>
+
+<script>
+    function filterItems(query) {
+        const q = query.trim().toLowerCase();
+        document.querySelectorAll('#itemList .file-row').forEach(row => {
+            const match = row.dataset.name.includes(q);
+            row.classList.toggle('hidden-row', !match);
+        });
+    }
+</script>
+
 </body>
 </html>
