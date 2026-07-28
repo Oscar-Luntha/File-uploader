@@ -1,3 +1,7 @@
+// middleware/auth.js
 export const isAuth = (req, res, next) => {
-  req.isAuthenticated ? next() : res.redirect("/login")
+  if (req.isAuthenticated && req.isAuthenticated() && req.user) {
+    return next();
+  }
+  return res.redirect("/login");
 };
