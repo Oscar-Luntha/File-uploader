@@ -1,0 +1,118 @@
+<!-- views/fileDetail.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>File Details - <%= file.name %> | Sage Space</title>
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/drive.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body>
+
+<%
+    function iconFor(name) {
+        const ext = (name.split('.').pop() || '').toLowerCase();
+        if (['png','jpg','jpeg','gif','webp','svg'].includes(ext)) return 'fa-regular fa-image';
+        if (['mp4','mov','avi','mkv'].includes(ext)) return 'fa-regular fa-file-video';
+        if (['mp3','wav','flac'].includes(ext)) return 'fa-regular fa-file-audio';
+        if (ext === 'pdf') return 'fa-regular fa-file-pdf';
+        if (['doc','docx'].includes(ext)) return 'fa-regular fa-file-word';
+        if (['xls','xlsx','csv'].includes(ext)) return 'fa-regular fa-file-excel';
+        if (['zip','rar','7z'].includes(ext)) return 'fa-regular fa-file-zipper';
+        return 'fa-regular fa-file';
+    }
+    const backHref = file.folderId ? `/folders/${file.folderId}` : '/dashboard';
+    const backLabel = file.folderId ? 'Folder' : 'My Drive';
+%>
+
+<div class="app-shell">
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-brand">
+            <a href="/" class="logo">🌿 Sage Space</a>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="/dashboard">
+                <i class="fa-solid fa-house"></i> My Drive
+            </a>
+        </nav>
+
+        <% if (typeof user !== 'undefined' && user) { %>
+            <div class="sidebar-storage">
+                <h4><i class="fa-solid fa-user"></i> <%= user.username %></h4>
+                <small><a href="/logout">Logout</a></small>
+            </div>
+        <% } %>
+
+    </aside>
+
+    <!-- ================= MAIN PANEL ================= -->
+
+    <main class="main-panel">
+
+        <header class="topbar">
+            <div class="breadcrumb">
+                <a href="<%= backHref %>"><%= backLabel %></a>
+                <i class="fa-solid fa-chevron-right"></i>
+                <span class="current"><%= file.name %></span>
+            </div>
+        </header>
+
+        <section class="file-preview">
+
+            <div class="card file-preview-main">
+                <i class="<%= iconFor(file.name) %>"></i>
+                <h1><%= file.name %></h1>
+            </div>
+
+            <div class="card file-preview-side">
+
+                <h3>File details</h3>
+
+                <div class="meta-row">
+                    <span>Name</span>
+                    <span><%= file.name %></span>
+                </div>
+
+                <div class="meta-row">
+                    <span>Size</span>
+                    <span><%= (file.size / 1024).toFixed(2) %> KB</span>
+                </div>
+
+                <div class="meta-row">
+                    <span>Uploaded</span>
+                    <span><%= new Date(file.createdAt).toLocaleString() %></span>
+                </div>
+
+                <div class="file-preview-actions">
+
+                    <a href="/files/<%= file.id %>/download" class="btn btn-primary">
+                        <i class="fa-solid fa-download"></i> Download
+                    </a>
+
+                    <form action="/files/<%= file.id %>/delete" method="POST">
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Delete this file permanently?')">
+                            <i class="fa-solid fa-trash"></i> Delete file
+                        </button>
+                    </form>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+</html>
